@@ -1420,7 +1420,7 @@
 
 <script>
 // ==================== LANGUAGE ====================
-const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzaSZksgFYUviOpaq6JWOtWNrg4G5vQzQ4HwCXJIH2Onzgs7bpuZWB-aC2nykixRFfYOg/exec';
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbxSTzZsuzr0Agv4n1sUoERL9IKIk3qL8pT-yX_77Yd77WQqaxAo8X1OBVMVg7pmXRMW/exec';
 let currentLang = 'ro';
 
 function setLang(lang) {
@@ -1503,13 +1503,11 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
     if (!ok) valid = false;
   });
 
-  // Courses
   const anyChecked = [...document.querySelectorAll('.course-check input')].some(c => c.checked);
   const courseErr = document.getElementById('courseErr');
   courseErr.classList.toggle('visible', !anyChecked);
   if (!anyChecked) valid = false;
 
-  // GDPR
   const gdprCb = document.getElementById('gdprConsent');
   const gdprErr = document.getElementById('gdprErr');
   gdprErr.style.display = gdprCb.checked ? 'none' : 'block';
@@ -1517,39 +1515,46 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
 
   if (!valid) return;
 
-  //collect selected courses
-  const selectedCourses=[...document.querySelectorAll('.course-check input:checked')].map(c=>c.value).join(', ');
+  // Collect selected courses
+  const selectedCourses = [...document.querySelectorAll('.course-check input:checked')]
+    .map(c => c.value)
+    .join(', ');
 
-  //Build payload
-  const payload={
+  // Build payload
+  const payload = {
     formType: 'registration',
-    childName:document.getElementById('childName').value.trim(),
-    childDob:document.getElementById('childDob').value,
-    parentName:document.getElementById('parentName').value.trim(),
+    childName: document.getElementById('childName').value.trim(),
+    childDob: document.getElementById('childDob').value,
+    parentName: document.getElementById('parentName').value.trim(),
     relationship: document.getElementById('relationship').value,
-    email:document.getElementById('email').value.trim(),
-    phone:document.getElementById('phone').value.trim(),
-    courses:selectedCourses,
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    courses: selectedCourses,
     additionalInfo: document.getElementById('additionalInfo').value.trim()
   };
 
-  const btn=this.querySelector('.btn-submit');
-  btn.disabled=true;
-  btn.textContent=currentLang==='ro'?'Se trimite...':'Sending...';
+  // Disable button and show loading state
+  const btn = this.querySelector('.btn-submit');
+  btn.disabled = true;
+  btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
 
   fetch(APPS_SCRIPT_URL, {
-    method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
-  }).then(()=>{
-    document.getElementById('regForm').style.display='none';
+  })
+  .then(() => {
+    document.getElementById('regForm').style.display = 'none';
     document.getElementById('formSuccess').classList.add('visible');
-    document.getElementById('formSuccess').scrollIntoView({behavior:'smooth',block:'center'});
-  }).catch(()=>{
-    btn.disabled=false;
-    btn.textContent=currentLang==='ro'?'🚀 Trimite înregistrarea':'🚀 Submit Registration';
-    alert(currentLang==='ro' ? 'A apărut o eroare. Te rugăm să încerci din nou.':'An error occured. Please try again.');
+    document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.textContent = currentLang === 'ro' ? '🚀 Trimite înregistrarea' : '🚀 Submit Registration';
+    alert(currentLang === 'ro'
+      ? 'A apărut o eroare. Te rugăm să încerci din nou.'
+      : 'An error occurred. Please try again.');
   });
 });
 
@@ -1582,26 +1587,30 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     name: document.getElementById('cName').value.trim(),
     email: document.getElementById('cEmail').value.trim(),
     subject: document.getElementById('cSubject').value.trim(),
-    message: document.getElementById('cMessage').value.trim(),
+    message: document.getElementById('cMessage').value.trim()
   };
 
-  const btn=this.querySelector('.btn-submit');
-  btn.disabled=true;
-  btn.textContent=currentLang==='ro' ? 'Se trimite...':'Sending...';
+  const btn = this.querySelector('.btn-submit');
+  btn.disabled = true;
+  btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
 
-  fetch(APPS_SCRIPT_URL,{
-    method:'POST',
-    mode:'no-cors',
-    headers: {'Content-Type':'application/json'},
-    body:JSON.stringify(payload)
-  }).then(()=>{
-    document.getElementById('contactForm').style.display='none';
-    document.getElementById('contactSuccess').classList.add('visible');
-  }).catch(()=>{
-    btn.disabled=false;
-    btn.textContent=currentLang==='ro'?'📨 Trimite mesajul':'📨 Send message';
-    alert(currentLang==='ro' ? 'A apărut o eroare. Te rugăm să încerci din nou.':'An error occured. Please try again.');
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
   })
+  .then(() => {
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('contactSuccess').classList.add('visible');
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.textContent = currentLang === 'ro' ? '📨 Trimite mesajul' : '📨 Send message';
+    alert(currentLang === 'ro'
+      ? 'A apărut o eroare. Te rugăm să încerci din nou.'
+      : 'An error occurred. Please try again.');
+  });
 });
 
 // ==================== PRIVACY MODAL ====================
