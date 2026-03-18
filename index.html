@@ -1534,7 +1534,7 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   };
 
   // Disable button and show loading state
-  const btn = this.querySelector('.btn-submit');
+  const btn = document.querySelector('#regForm .btn-submit');
   btn.disabled = true;
   btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
 
@@ -1590,7 +1590,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     message: document.getElementById('cMessage').value.trim()
   };
 
-  const btn = this.querySelector('.btn-submit');
+  const btn = document.querySelector('#contactForm.btn-submit');
   btn.disabled = true;
   btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
 
