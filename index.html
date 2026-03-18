@@ -1242,7 +1242,7 @@
               <label for="gdprConsent" class="gdpr-text">
                 <span data-ro="Sunt de acord cu " data-en="I agree with the ">Sunt de acord cu </span>
                 <a href="#" id="privacyLink" data-ro="Politica de Confidențialitate" data-en="Privacy Policy">Politica de Confidențialitate</a>
-                <span data-ro=" și cu prelucrarea datelor mele personale și ale copilului meu în scopul înscrierii la cursurile Continuous Education Hub, conform GDPR." data-en=" and with the processing of my personal data and my child's data for enrollment in Continuous Education Hub courses, in accordance with GDPR."> și cu prelucrarea datelor mele personale și ale copilului meu în scopul înscrierii la cursurile Continuous Education Hub, conform GDPR.</span>
+                <span data-ro=" &amp;#537;i cu prelucrarea datelor mele personale &amp;#537;i ale copilului meu &icirc;n scopul &icirc;nscrierii la cursurile Continuous Education Hub, conform GDPR." data-en=" and with the processing of my personal data and my child's data for enrollment in Continuous Education Hub courses, in accordance with GDPR."> &amp;#537;i cu prelucrarea datelor mele personale &amp;#537;i ale copilului meu &icirc;n scopul &icirc;nscrierii la cursurile Continuous Education Hub, conform GDPR..</span>
               </label>
             </div>
             <span class="error-msg" id="gdprErr" style="margin-top:8px;display:none;" data-ro="Trebuie să accepți politica de confidențialitate" data-en="You must accept the privacy policy">Trebuie să accepți politica de confidențialitate</span>
@@ -1551,7 +1551,7 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   })
   .catch(() => {
     btn.disabled = false;
-    btn.textContent = currentLang === 'ro' ? '🚀 Trimite înregistrarea' : '🚀 Submit Registration';
+    btn.textContent = currentLang === 'ro' ? '\uD83D\uDE80 Trimite \xEEnregistrarea' : '\uD83D\uDE80 Submit Registration';
     alert(currentLang === 'ro'
       ? 'Eroare. Va rugam incercati din nou.'
       : 'An error occurred. Please try again.');
@@ -1590,9 +1590,9 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     message: document.getElementById('cMessage').value.trim()
   };
 
-  const btn = document.querySelector('#contactForm.btn-submit');
+  const btn = document.querySelector('#contactForm .btn-submit');
   btn.disabled = true;
-  btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
+  btn.textContent = currentLang === 'ro' ? '\u23F3 Se trimite...' : '\u23F3 Sending...';
 
   fetch(APPS_SCRIPT_URL, {
     method: 'POST',
@@ -1606,7 +1606,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
   })
   .catch(() => {
     btn.disabled = false;
-    btn.textContent = currentLang === 'ro' ? '📨 Trimite mesajul' : '📨 Send message';
+    btn.textContent = currentLang === 'ro' ? '\uD83D\uDCE8 Trimite mesajul' : '\uD83D\uDCE8 Send message';
     alert(currentLang === 'ro'
       ? 'Eroare. Va rugam incercati din nou.'
       : 'An error occurred. Please try again.');
