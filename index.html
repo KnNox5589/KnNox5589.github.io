@@ -1238,8 +1238,8 @@
           <!-- GDPR -->
           <div class="gdpr-block">
             <div class="gdpr-check-row">
-              <input type="checkbox" id="gdprConsent" name="gdprConsent" />
-              <label for="gdprConsent" class="gdpr-text">
+              <input type="checkbox" id="gdprAgreement" name="privacyAgreement" />
+              <label for="privacyAgreement" class="gdpr-text">
                 <span data-ro="Sunt de acord cu " data-en="I agree with the ">Sunt de acord cu </span>
                 <a href="#" onclick="openPrivacy();return false;" data-ro="Politica de Confidențialitate" data-en="Privacy Policy">Politica de Confidențialitate</a>
                 <span data-ro=" și cu prelucrarea datelor mele personale și ale copilului meu în scopul înscrierii la cursurile Continuous Education Hub, conform GDPR." data-en=" and with the processing of my personal data and my child's data for enrollment in Continuous Education Hub courses, in accordance with GDPR."> și cu prelucrarea datelor mele personale și ale copilului meu în scopul înscrierii la cursurile Continuous Education Hub, conform GDPR.</span>
@@ -1508,7 +1508,7 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   courseErr.classList.toggle('visible', !anyChecked);
   if (!anyChecked) valid = false;
 
-  const gdprCb = document.getElementById('gdprConsent');
+  const gdprCb = document.getElementById('privacyAgreement');
   const gdprErr = document.getElementById('gdprErr');
   gdprErr.style.display = gdprCb.checked ? 'none' : 'block';
   if (!gdprCb.checked) valid = false;
@@ -1538,24 +1538,29 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   btn.disabled = true;
   btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
 
-  fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
-    document.getElementById('regForm').style.display = 'none';
-    document.getElementById('formSuccess').classList.add('visible');
-    document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  })
-  .catch(() => {
-    btn.disabled = false;
-    btn.textContent = currentLang === 'ro' ? '🚀 Trimite înregistrarea' : '🚀 Submit Registration';
-    alert(currentLang === 'ro'
-      ? 'A apărut o eroare. Te rugăm să încerci din nou.'
-      : 'An error occurred. Please try again.');
+  const tempForm = document.createElement('form');
+  temForm.method='POST';
+  tempForm.action=APPS_SCRIPT_URL;
+  tempForm.target='hiddenFrame';
+  tempForm.style.display='none';
+
+  Object.entries(payload).forEach(([key,value])=>{
+    const input=document.createElement('input');
+    input.type='hidden';
+    input.name=key;
+    input.value=value;
+    tempForm.appendChild(input);
   });
+  document.body.appendChild(tempForm);
+  tempForm.submit();
+  document.body.removeChild(tempForm);
+
+  setTimeout(()=>{
+    document.getElementById('regForm').style.display='none';
+    document.getElementById('formSuccess').classList.add('visible');
+    document.getElementById('formSuccess').scrollIntoView({behavior: 'smooth',block:'center'});
+
+  },1000);
 });
 
 // ==================== CONTACT FORM ====================
@@ -1594,23 +1599,28 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
   btn.disabled = true;
   btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
 
-  fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
-    document.getElementById('contactForm').style.display = 'none';
-    document.getElementById('contactSuccess').classList.add('visible');
-  })
-  .catch(() => {
-    btn.disabled = false;
-    btn.textContent = currentLang === 'ro' ? '📨 Trimite mesajul' : '📨 Send message';
-    alert(currentLang === 'ro'
-      ? 'A apărut o eroare. Te rugăm să încerci din nou.'
-      : 'An error occurred. Please try again.');
+  const tempForm = document.createElement('form');
+  temForm.method='POST';
+  tempForm.action=APPS_SCRIPT_URL;
+  tempForm.target='hiddenFrame';
+  tempForm.style.display='none';
+
+  Object.entries(payload).forEach(([key,value])=>{
+    const input=document.createElement('input');
+    input.type='hidden';
+    input.name=key;
+    input.value=value;
+    tempForm.appendChild(input);
   });
+  document.body.appendChild(tempForm);
+  tempForm.submit();
+  document.body.removeChild(tempForm);
+
+  setTimeout(()=>{
+    document.getElementById('contactForm').style.display='none';
+    document.getElementById('contactSuccess').classList.add('visible');
+    document.getElementById('contactSuccess').scrollIntoView({behavior: 'smooth',block:'center'});
+  },1000);
 });
 
 // ==================== PRIVACY MODAL ====================
@@ -1624,5 +1634,6 @@ function closePrivacy() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePrivacy(); });
 </script>
+<iframe name="hiddenFrame" style="display:none;"></iframe>
 </body>
 </html>
