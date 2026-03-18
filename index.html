@@ -1417,7 +1417,7 @@
     <p data-ro="Nu vindem, nu închiriem și nu partajăm datele tale cu terți în scop comercial. Datele sunt stocate securizat pe servere din Uniunea Europeană." data-en="We do not sell, rent or share your data with third parties for commercial purposes. Data is securely stored on servers within the European Union.">Nu vindem, nu închiriem și nu partajăm datele tale cu terți în scop comercial. Datele sunt stocate securizat pe servere din Uniunea Europeană.</p>
   </div>
 </div>
-
+<iframe name="hiddenFrame" style="display:none;"></iframe>
 <script>
 // ==================== LANGUAGE ====================
 const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzTLb6p-xDeHD-tSXH08QJf0mSunmuakCsJLkbqJA1LyPkiVvk5QDTtxCxxT7rjx9NaWg/exec';
@@ -1533,11 +1533,6 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
     additionalInfo: document.getElementById('additionalInfo').value.trim()
   };
 
-  // Disable button and show loading state
-  const btn = document.querySelector('#regForm .btn-submit');
-  btn.disabled = true;
-  btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
-
   const tempForm = document.createElement('form');
   temForm.method='POST';
   tempForm.action=APPS_SCRIPT_URL;
@@ -1595,10 +1590,6 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     message: document.getElementById('cMessage').value.trim()
   };
 
-  const btn = document.querySelector('#contactForm.btn-submit');
-  btn.disabled = true;
-  btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
-
   const tempForm = document.createElement('form');
   temForm.method='POST';
   tempForm.action=APPS_SCRIPT_URL;
@@ -1634,6 +1625,5 @@ function closePrivacy() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePrivacy(); });
 </script>
-<iframe name="hiddenFrame" style="display:none;"></iframe>
 </body>
 </html>
