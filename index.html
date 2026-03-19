@@ -1420,7 +1420,7 @@
 <iframe name="hiddenFrame" style="display:none;"></iframe>
 <script>
 // ==================== LANGUAGE ====================
-const APPS_SCRIPT_URL='https://cehub-proxy.petrebutunoi-96.workers.dev/';
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbxSTzZsuzr0Agv4n1sUoERL9IKIk3qL8pT-yX_77Yd77WQqaxAo8X1OBVMVg7pmXRMW/exec';
 let currentLang = 'ro';
 
 function setLang(lang) {
@@ -1533,19 +1533,34 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
     additionalInfo: document.getElementById('additionalInfo').value.trim()
   };
 
-  const formData=new FormData();
-  Object.entries(payload).forEach(([key,value])=>{formData.append(key,value)});
+  // Disable button and show loading state
+  const btn = document.querySelector('#regForm .btn-submit');
+  btn.disabled = true;
+  btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
 
-  fetch(APPS_SCRIPT_URL,{
-    method:'POST',
-    body:formData
-  }).then(()=>{
+  const tempForm = document.createElement('form');
+  tempForm.method='POST';
+  tempForm.action=APPS_SCRIPT_URL;
+  tempForm.target='hiddenFrame';
+  tempForm.style.display='none';
+
+  Object.entries(payload).forEach(([key,value])=>{
+    const input=document.createElement('input');
+    input.type='hidden';
+    input.name=key;
+    input.value=value;
+    tempForm.appendChild(input);
+  });
+  document.body.appendChild(tempForm);
+  tempForm.submit();
+  document.body.removeChild(tempForm);
+
+  setTimeout(()=>{
     document.getElementById('regForm').style.display='none';
     document.getElementById('formSuccess').classList.add('visible');
-    document.getElementById('formSuccess').scrollIntoView({behavior:'smooth',block:'center'});
-  }).catch(()=>{
-    alert('An error occured. Please try again.');
-  });
+    document.getElementById('formSuccess').scrollIntoView({behavior: 'smooth',block:'center'});
+
+  },1000);
 });
 
 // ==================== CONTACT FORM ====================
@@ -1580,18 +1595,32 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     message: document.getElementById('cMessage').value.trim()
   };
 
-  const formData=new FormData();
-  Object.entries(payload).forEach(([key,value])=>{formData.append(key,value)});
+  const btn = document.querySelector('#contactForm .btn-submit');
+  btn.disabled = true;
+  btn.textContent = currentLang === 'ro' ? '⏳ Se trimite...' : '⏳ Sending...';
 
-  fetch(APPS_SCRIPT_URL,{
-    method:'POST',
-    body:formData
-  }).then(()=>{
+  const tempForm = document.createElement('form');
+  tempForm.method='POST';
+  tempForm.action=APPS_SCRIPT_URL;
+  tempForm.target='hiddenFrame';
+  tempForm.style.display='none';
+
+  Object.entries(payload).forEach(([key,value])=>{
+    const input=document.createElement('input');
+    input.type='hidden';
+    input.name=key;
+    input.value=value;
+    tempForm.appendChild(input);
+  });
+  document.body.appendChild(tempForm);
+  tempForm.submit();
+  document.body.removeChild(tempForm);
+
+  setTimeout(()=>{
     document.getElementById('contactForm').style.display='none';
     document.getElementById('contactSuccess').classList.add('visible');
-  }).catch(()=>{
-    alert('An error occured. Please try again.');
-  });
+    document.getElementById('contactSuccess').scrollIntoView({behavior: 'smooth',block:'center'});
+  },1000);
 });
 
 // ==================== PRIVACY MODAL ====================
