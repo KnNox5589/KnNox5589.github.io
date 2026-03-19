@@ -1420,7 +1420,7 @@
 <iframe name="hiddenFrame" style="display:none;"></iframe>
 <script>
 // ==================== LANGUAGE ====================
-const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzTLb6p-xDeHD-tSXH08QJf0mSunmuakCsJLkbqJA1LyPkiVvk5QDTtxCxxT7rjx9NaWg/exec';
+const APPS_SCRIPT_URL='https://cehub-proxy.petrebutunoi-96.workers.dev/';
 let currentLang = 'ro';
 
 function setLang(lang) {
@@ -1533,29 +1533,19 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
     additionalInfo: document.getElementById('additionalInfo').value.trim()
   };
 
-  const tempForm = document.createElement('form');
-  tempForm.method='POST';
-  tempForm.action=APPS_SCRIPT_URL;
-  tempForm.target='hiddenFrame';
-  tempForm.style.display='none';
+  const formData=new FormData();
+  Object.entries(payload).forEach(([key,value])=>{formData.append(key,value)});
 
-  Object.entries(payload).forEach(([key,value])=>{
-    const input=document.createElement('input');
-    input.type='hidden';
-    input.name=key;
-    input.value=value;
-    tempForm.appendChild(input);
-  });
-  document.body.appendChild(tempForm);
-  tempForm.submit();
-  document.body.removeChild(tempForm);
-
-  setTimeout(()=>{
+  fetch(APPS_SCRIPT_URL,{
+    method:'POST',
+    body:formData
+  }).then(()=>{
     document.getElementById('regForm').style.display='none';
     document.getElementById('formSuccess').classList.add('visible');
-    document.getElementById('formSuccess').scrollIntoView({behavior: 'smooth',block:'center'});
-
-  },1000);
+    document.getElementById('formSuccess').scrollIntoView({behavior:'smooth',block:'center'});
+  }).catch(()=>{
+    alert('An error occured. Please try again.');
+  });
 });
 
 // ==================== CONTACT FORM ====================
@@ -1590,28 +1580,18 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     message: document.getElementById('cMessage').value.trim()
   };
 
-  const tempForm = document.createElement('form');
-  tempForm.method='POST';
-  tempForm.action=APPS_SCRIPT_URL;
-  tempForm.target='hiddenFrame';
-  tempForm.style.display='none';
+  const formData=new FormData();
+  Object.entries(payload).forEach(([key,value])=>{formData.append(key,value)});
 
-  Object.entries(payload).forEach(([key,value])=>{
-    const input=document.createElement('input');
-    input.type='hidden';
-    input.name=key;
-    input.value=value;
-    tempForm.appendChild(input);
-  });
-  document.body.appendChild(tempForm);
-  tempForm.submit();
-  document.body.removeChild(tempForm);
-
-  setTimeout(()=>{
+  fetch(APPS_SCRIPT_URL,{
+    method:'POST',
+    body:formData
+  }).then(()=>{
     document.getElementById('contactForm').style.display='none';
     document.getElementById('contactSuccess').classList.add('visible');
-    document.getElementById('contactSuccess').scrollIntoView({behavior: 'smooth',block:'center'});
-  },1000);
+  }).catch(()=>{
+    alert('An error occured. Please try again.');
+  });
 });
 
 // ==================== PRIVACY MODAL ====================
